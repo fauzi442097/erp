@@ -1766,11 +1766,11 @@
                             <!--end::Avatar-->
                             <!--begin::Username-->
                             <div class="d-flex flex-column">
-                                <div class="fw-bold d-flex align-items-center fs-5">Max Smith
+                                <div class="fw-bold d-flex align-items-center fs-5">{{auth()->user()->name}}
                                     <span class="px-2 py-1 badge badge-light-success fw-bold fs-8 ms-2">Pro</span>
                                 </div>
                                 <a href="#"
-                                    class="fw-semibold text-muted text-hover-primary fs-7">max@kt.com</a>
+                                    class="fw-semibold text-muted text-hover-primary fs-7">{{auth()->user()->email}}</a>
                             </div>
                             <!--end::Username-->
                         </div>
@@ -1781,8 +1781,7 @@
                     <!--end::Menu separator-->
                     <!--begin::Menu item-->
                     <div class="px-5 menu-item">
-                        <a href="../../demo39/dist/account/overview.html" class="px-5 menu-link">My
-                            Profile</a>
+                        <a href="{{ route('profile.index') }}" class="px-5 menu-link">Profil</a>
                     </div>
                     <!--end::Menu item-->
                     <!--begin::Menu item-->

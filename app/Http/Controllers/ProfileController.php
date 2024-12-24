@@ -21,6 +21,12 @@ class ProfileController extends Controller
         ]);
     }
 
+    public function index(Request $request): View
+    {
+        $param['user'] = auth()->user();
+        return view('profile', $param);
+    }
+
     /**
      * Update the user's profile information.
      */

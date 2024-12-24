@@ -93,39 +93,6 @@ License: For each use you must have a valid license purchased only from above li
                             </div>
                             <!--begin::Heading-->
 
-
-                            {{-- <!--begin::Login options-->
-                            <div class="row g-3 mb-9">
-                                <!--begin::Col-->
-                                <div class="col-md-6">
-                                    <!--begin::Google link=-->
-                                    <a href="#"
-                                        class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100">
-                                        <img alt="Logo" src="assets/media/svg/brand-logos/google-icon.svg"
-                                            class="h-15px me-3" />Sign in with Google</a>
-                                    <!--end::Google link=-->
-                                </div>
-                                <!--end::Col-->
-                                <!--begin::Col-->
-                                <div class="col-md-6">
-                                    <!--begin::Google link=-->
-                                    <a href="#"
-                                        class="btn btn-flex btn-outline btn-text-gray-700 btn-active-color-primary bg-state-light flex-center text-nowrap w-100">
-                                        <img alt="Logo" src="assets/media/svg/brand-logos/apple-black.svg"
-                                            class="theme-light-show h-15px me-3" />
-                                        <img alt="Logo" src="assets/media/svg/brand-logos/apple-black-dark.svg"
-                                            class="theme-dark-show h-15px me-3" />Sign in with Apple</a>
-                                    <!--end::Google link=-->
-                                </div>
-                                <!--end::Col-->
-                            </div>
-                            <!--end::Login options-->
-                            <!--begin::Separator-->
-                            <div class="separator separator-content my-14">
-                                <span class="text-gray-500 w-125px fw-semibold fs-7">Or with email</span>
-                            </div>
-                            <!--end::Separator--> --}}
-
                             <!--begin::Alert-->
                             @if ($errors->get('email'))
                                 <div class="p-5 alert alert-danger d-flex align-items-center mb-11">
@@ -149,7 +116,6 @@ License: For each use you must have a valid license purchased only from above li
                                 </div>
                                 <!--end::Alert-->
                             @endif
-
 
                             <!--begin::Input group=-->
                             <div class="mb-8 fv-row">
