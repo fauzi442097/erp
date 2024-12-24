@@ -64,6 +64,7 @@ License: For each use you must have a valid license purchased only from above li
         }
     </script>
     <!--end::Theme mode setup on page load-->
+
     <!--begin::Root-->
     <div class="d-flex flex-column flex-root" id="kt_app_root">
         <!--begin::Authentication - Sign-in -->
@@ -72,11 +73,15 @@ License: For each use you must have a valid license purchased only from above li
             <div class="order-2 p-10 d-flex flex-column flex-lg-row-fluid w-lg-50 order-lg-1">
                 <!--begin::Form-->
                 <div class="d-flex flex-center flex-column flex-lg-row-fluid">
+
+
                     <!--begin::Wrapper-->
                     <div class="p-10 w-lg-500px">
+
                         <!--begin::Form-->
-                        <form class="form w-100" novalidate="novalidate" id="kt_sign_in_form"
-                            data-kt-redirect-url="{{ route('home') }}" action="#">
+                        <form method="POST" action="{{ route('login') }}" class="form w-100" novalidate="novalidate"
+                            id="kt_sign_in_form" data-kt-redirect-url="{{ route('home') }}">
+                            @csrf
                             <!--begin::Heading-->
                             <div class="text-center mb-11">
                                 <!--begin::Title-->
@@ -87,6 +92,7 @@ License: For each use you must have a valid license purchased only from above li
                                 <!--end::Subtitle=-->
                             </div>
                             <!--begin::Heading-->
+
 
                             {{-- <!--begin::Login options-->
                             <div class="row g-3 mb-9">
@@ -119,6 +125,31 @@ License: For each use you must have a valid license purchased only from above li
                                 <span class="text-gray-500 w-125px fw-semibold fs-7">Or with email</span>
                             </div>
                             <!--end::Separator--> --}}
+
+                            <!--begin::Alert-->
+                            @if ($errors->get('email'))
+                                <div class="p-5 alert alert-danger d-flex align-items-center mb-11">
+
+                                    <!--begin::Icon-->
+                                    <i class="ki-duotone ki-shield-tick fs-2hx text-success me-4"><span
+                                            class="path1"></span><span class="path2"></span></i>
+                                    <!--end::Icon-->
+
+                                    <!--begin::Wrapper-->
+                                    <div class="d-flex flex-column">
+                                        <!--begin::Title-->
+                                        <h4 class="mb-1 text-danger">Login Gagal</h4>
+                                        <!--end::Title-->
+
+                                        <!--begin::Content-->
+                                        <span>Username atau password salah</span>
+                                        <!--end::Content-->
+                                    </div>
+                                    <!--end::Wrapper-->
+                                </div>
+                                <!--end::Alert-->
+                            @endif
+
 
                             <!--begin::Input group=-->
                             <div class="mb-8 fv-row">
