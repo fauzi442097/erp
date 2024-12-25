@@ -16,17 +16,17 @@ var KTSigninGeneral = (function () {
                     validators: {
                         regexp: {
                             regexp: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                            message: "The value is not a valid email address",
+                            message: "Format email tidak valid",
                         },
                         notEmpty: {
-                            message: "Email address is required",
+                            message: "Wajib diisi",
                         },
                     },
                 },
                 password: {
                     validators: {
                         notEmpty: {
-                            message: "The password is required",
+                            message: "Wajib diisi",
                         },
                     },
                 },

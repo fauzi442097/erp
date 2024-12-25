@@ -1,4 +1,5 @@
 <base href="" />
+<meta name="csrf-token" content="{{ csrf_token() }}" />
 <title>Metronic - The World's #1 Selling Bootstrap Admin Template by Keenthemes</title>
 <meta charset="utf-8" />
 <meta name="description"
@@ -25,4 +26,5 @@
 <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
 <link href="{{ asset('assets/plugins/global/plugins.bundle.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('assets/css/style.bundle.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('css/my.css') }}" rel="stylesheet" type="text/css" />
 <!--end::Global Stylesheets Bundle-->

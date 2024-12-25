@@ -4680,6 +4680,7 @@ License: For each use you must have a valid license purchased only from above li
     <!--end::Modals-->
 
     @include('layouts.script')
+    @include('global_action')
     @yield('script')
     <!--end::Custom Javascript-->
     <!--end::Javascript-->
