@@ -7,6 +7,13 @@ trait Response
 
     public function coreResponse($message, $data = null, $statusCode)
     {
+        if ($statusCode == 500) {
+            return response()->json([
+                'rc' => $statusCode,
+                'rm' => $message,
+                'data' => $data
+            ], 500);
+        }
         return response()->json([
             'rc' => $statusCode,
             'rm' => $message,

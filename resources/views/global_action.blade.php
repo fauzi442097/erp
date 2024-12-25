@@ -5,6 +5,11 @@
     const RELOAD_DATATABLE = 'RELOAD_DATATABLE';
     const REDIRECT_PAGE = 'REDIRECT_PAGE';
     const REDIRECT_PAGE_AJAX = 'REDIRECT_PAGE_AJAX';
+    const POST = 'POST';
+    const PUT = 'PUT';
+    const PATCH = 'PATCH';
+    const DELETE = 'DELETE';
+    const GET = 'GET';
 
     const Toast = Swal.mixin({
         toast: true,
@@ -45,17 +50,15 @@
     });
 
     $(document).ajaxError(function(event, jqxhr, settings, exception) {
-
-
         if (jqxhr.status == 404) {
             return showAlert("warning", "Halaman tidak ditemukan", NO_ACTION);
         }
 
-        if (jqxhr.status == 401) {
+        if (jqxhr.status == 401 || jqxhr.status == 419) {
             let urlLogin = `${base_url}/login`;
             showAlert(
                 "warning",
-                "<p style='margin-bottom: .5rem'> Sesi Login Habis </p> Silakan login kembali",
+                ".<p style='margin-bottom: .5rem'> Sesi Login Habis </p> Silakan login kembali",
                 REDIRECT_PAGE,
                 urlLogin
             );
@@ -91,13 +94,13 @@
         }
     }
 
-    function doPost(url, data, callback) {
+    function doPost(url, formData, callback) {
         $.ajax({
-            processData: false,
-            contentType: false,
-            type: 'POST',
             url: url,
-            data: data,
+            type: 'POST', // Gunakan metode PATCH
+            data: formData, // Kirim FormData
+            processData: false, // Jangan memproses data (karena FormData)
+            contentType: false, // Jangan tentukan content-type (FormData akan menangani ini)
             global: true,
             success: function(response) {
                 if (typeof callback == 'function') {
@@ -111,6 +114,7 @@
             }
         });
     }
+
 
     function doGet(url, callback) {
         $.get(url, function(response, status, xhr) {
