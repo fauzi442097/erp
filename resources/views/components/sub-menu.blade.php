@@ -24,7 +24,7 @@
             @if ($subMenu->children->isEmpty())
                 <div class="menu-item">
                     <!--begin:Menu link-->
-                    <a class="menu-link" href="{{ $subMenu->url }}" target="_blank" title="{{ $subMenu->name }}"
+                    <a class="menu-link" href="{{ $subMenu->url }}" title="{{ $subMenu->name }}"
                         data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-dismiss="click"
                         data-bs-placement="right">
                         <span class="menu-bullet">

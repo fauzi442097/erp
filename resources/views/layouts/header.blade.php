@@ -1745,7 +1745,8 @@
                     data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent"
                     data-kt-menu-placement="bottom-end">
                     @if (auth()->user()->photo_url)
-                        <img src="{{ asset(auth()->user()->photo_url) }}" alt="user" />
+                        <img src="{{ asset(auth()->user()->photo_url) }}" alt="user"
+                            style="object-fit: cover" />
                     @else
                         <img src="assets/media/svg/avatars/blank.svg" alt="user" />
                     @endif
@@ -1759,7 +1760,8 @@
                             <!--begin::Avatar-->
                             <div class="symbol symbol-50px me-5">
                                 @if (auth()->user()->photo_url)
-                                    <img src="{{ asset(auth()->user()->photo_url) }}" alt="Logo" />
+                                    <img src="{{ asset(auth()->user()->photo_url) }}" style="object-fit: cover"
+                                        alt="Logo" />
                                 @else
                                     <img src="assets/media/svg/avatars/blank.svg" alt="Logo" />
                                 @endif

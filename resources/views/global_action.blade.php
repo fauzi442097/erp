@@ -204,6 +204,11 @@
                 confirmBtnStyle = 'font-weight-bold btn-primary'
                 showCancelBtn = true
                 break;
+            case 'remove_data':
+                type = 'warning'
+                confirmBtnStyle = 'font-weight-bold btn-danger'
+                showCancelBtn = true
+                break;
         }
 
         Swal.fire({
@@ -216,7 +221,8 @@
             customClass: {
                 confirmButton: `btn ${confirmBtnStyle}`,
                 cancelButton: 'btn btn-secondary'
-            }
+            },
+            reverseButtons: true,
         }).then(function(result) {
             if (typeof callback == 'function') {
                 callback(result)
@@ -234,5 +240,13 @@
 
     function clearErrorInput() {
         $('.error-input-message').addClass('d-none');
+    }
+
+    function showLoading() {
+        KTApp.showPageLoading();
+    }
+
+    function hideLoading() {
+        KTApp.hidePageLoading();
     }
 </script>

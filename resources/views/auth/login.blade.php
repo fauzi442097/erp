@@ -117,6 +117,16 @@ License: For each use you must have a valid license purchased only from above li
                                 <!--end::Alert-->
                             @endif
 
+                            @if (session('info'))
+                                <div class="p-5 alert alert-info d-flex align-items-center mb-11">
+                                    <div class="d-flex flex-column">
+                                        <span> {{ session('info') }} </span>
+                                    </div>
+                                </div>
+                            @endif
+
+
+
                             <!--begin::Input group=-->
                             <div class="mb-8 fv-row">
                                 <!--begin::Email-->

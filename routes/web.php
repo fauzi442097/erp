@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -11,7 +12,7 @@ Route::middleware('auth')->group(function () {
     })->name('home');
 
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        return view('home');
     })->name('dashboard');
 
 
@@ -20,6 +21,13 @@ Route::middleware('auth')->group(function () {
 
     Route::post('update_password', [ProfileController::class, 'updatePassword'])->name('update_password');
     Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
+
+    Route::prefix('users')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('users.index');
+        Route::get('/get_data', [UserController::class, 'getData'])->name('users.get_data');
+        Route::delete('/{user}', [UserController::class, 'destroy'])->name('users.delete', ['user' => 'user']);
+        Route::patch('/{user}/toogle_aktif', [UserController::class, 'activeDeactiveUser'])->name('users.delete', ['user' => 'user']);
+    });
 });
 
 

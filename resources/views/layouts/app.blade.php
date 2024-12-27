@@ -47,6 +47,9 @@ License: For each use you must have a valid license purchased only from above li
     </script>
     <!--end::Theme mode setup on page load-->
     <!--begin::App-->
+
+   @include('layouts.loading-page')
+
     <div class="d-flex flex-column flex-root app-root" id="kt_app_root">
         <!--begin::Page-->
         <div class="app-page flex-column flex-column-fluid" id="kt_app_page">
@@ -62,7 +65,8 @@ License: For each use you must have a valid license purchased only from above li
                 <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
                     <!--begin::Content wrapper-->
                     <div class="d-flex flex-column flex-column-fluid">
-                        <!--begin::Content-->
+                        @yield('toolbar')
+
                         <div id="kt_app_content" class="app-content flex-column-fluid">
                             <!--begin::Content container-->
                             <div id="kt_app_content_container" class="app-container container-fluid">

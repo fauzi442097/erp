@@ -26,9 +26,14 @@ class AuthenticatedSessionController extends Controller
     {
         $request->authenticate();
 
-        $request->session()->regenerate();
+        $user = auth()->user();
+        if ($user->suspended) {
+            Auth::guard('web')->logout();
+            return redirect()->route('login')->with('info', 'Akun Anda tidak aktif. Silakan hubungi Admin');
+        }
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $request->session()->regenerate();
+        return redirect()->intended(route('home', absolute: false));
     }
 
     /**

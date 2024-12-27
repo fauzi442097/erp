@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('toolbar')
+    <x-toolbar :pageTitle="'Dashboard'"/>
+@endsection
+
 @section('content')
     <!--begin::Row-->
     <div class="row g-5 g-xl-10">

@@ -15,9 +15,11 @@
         "laravel/tinker": "^2.9",
         "owen-it/laravel-auditing": "^13.6",
         "rap2hpoutre/laravel-log-viewer": "^2.4",
-        "spatie/laravel-permission": "^6.10"
+        "spatie/laravel-permission": "^6.10",
+        "yajra/laravel-datatables-oracle": "11.0"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.14",
         "fakerphp/faker": "^1.23",
         "laravel/breeze": "^2.3",
         "laravel/pail": "^1.1",
