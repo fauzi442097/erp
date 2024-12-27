@@ -40,8 +40,7 @@
                 <!--begin::Toolbar-->
                 <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                     <!--begin::Add user-->
-                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#kt_modal_add_user">
+                    <button type="button" class="btn btn-primary" onclick="showModalForm('create')">
                         <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
                         <span class="svg-icon svg-icon-2">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -52,7 +51,7 @@
                                     fill="currentColor" />
                             </svg>
                         </span>
-                        <!--end::Svg Icon-->Add User</button>
+                        <!--end::Svg Icon-->Tambah User</button>
                     <!--end::Add user-->
                 </div>
                 <!--end::Toolbar-->
@@ -85,15 +84,18 @@
         <!--end::Card body-->
     </div>
     <!--end::Card-->
-    @include('users.modal')
+    @include('users.modal_form')
 @endsection
 
 @section('script')
     <script type="text/javascript">
         var datatable;
+        var fvUser;
+        var formUser = document.getElementById("kt_modal_add_user_form");
 
         $(document).ready(function() {
             initDatatable();
+            initFormUser();
         })
 
         function initDatatable() {
@@ -163,21 +165,24 @@
                                 </a>
                                 <!--begin::Menu-->
                                 <div class="py-4 menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-bold fs-7 w-125px" data-kt-menu="true">
-                                    <!--begin::Menu item-->
+
+                                    <div class="px-3 menu-item">
+                                        <a href="javascript:;" class="px-3 menu-link" data-kt-docs-table-filter="edit_row" onclick="showModalForm('update', '${row.id}')">
+                                            Ubah
+                                        </a>
+                                    </div>
+
                                     <div class="px-3 menu-item">
                                         <a href="javascript:;" class="px-3 menu-link" data-kt-docs-table-filter="edit_row" onclick="handleToogleAktifUser('${row.id}', '${row.name}', '${setActive}')">
                                             ${labelAktif}
                                         </a>
                                     </div>
-                                    <!--end::Menu item-->
 
-                                    <!--begin::Menu item-->
                                     <div class="px-3 menu-item">
                                         <a href="javascript:;" onclick="handleDeleteUser('${row.id}', '${row.name}')" class="px-3 menu-link" data-kt-docs-table-filter="delete_row">
                                             Hapus
                                         </a>
                                     </div>
-                                    <!--end::Menu item-->
                                 </div>
                                 <!--end::Menu-->`;
                         },
@@ -189,6 +194,46 @@
                 drawCallback: function(settings) {
                     KTMenu.init();
                 }
+            });
+        }
+
+        function initFormUser() {
+            fvUser = FormValidation.formValidation(formUser, {
+                fields: {
+                    name: {
+                        validators: {
+                            notEmpty: {
+                                message: "Wajib diisi",
+                            },
+                        },
+                    },
+
+                    email: {
+                        validators: {
+                            notEmpty: {
+                                message: "Wajib diisi",
+                            },
+                            emailAddress: {
+                                message: 'Format email tidak valid'
+                            }
+                        },
+                    },
+
+                    role: {
+                        validators: {
+                            notEmpty: {
+                                message: "Wajib diisi",
+                            },
+                        },
+                    },
+                },
+
+                plugins: {
+                    trigger: new FormValidation.plugins.Trigger(),
+                    bootstrap: new FormValidation.plugins.Bootstrap5({
+                        rowSelector: ".fv-row",
+                    }),
+                },
             });
         }
 
@@ -258,6 +303,80 @@
 
         function handleSearchDatatable(e) {
             datatable.search($(e).val()).draw();
+        }
+
+        function showModalForm(action, user_id) {
+
+            fvUser.resetForm();
+            formUser.reset();
+            clearErrorInput();
+
+            if (action == 'create') {
+                $("#kt_modal_add_user").modal('show');
+                $("#title_modal").text('Tambah User');
+                $("#action_type").val('create');
+                $("#container-photo-url").css('background-image',
+                    'url(assets/media/svg/files/blank-image.svg)')
+            } else {
+                $("#title_modal").text('Ubah User');
+                $("#action_type").val('update');
+                showLoading()
+                doGet(`/users/${user_id}`, function(message, res) {
+                    hideLoading()
+                    if (res.rc == 200) {
+                        let user = res.data
+
+                        if (user.full_photo_url) {
+                            $("#container-photo-url").css('background-image', `url(${user.full_photo_url})`)
+                        } else {
+                            $("#container-photo-url").css('background-image',
+                                'url(assets/media/svg/files/blank-image.svg)')
+
+                        }
+
+                        $("#user_id").val(user.id)
+                        $("#name").val(user.name)
+                        $("#email").val(user.email)
+                        $("#kt_modal_add_user").modal('show');
+                        $("#title_modal").text('Ubah User');
+                        $("#action_type").val('update');
+
+                        let roles = user.roles
+                        if (roles.length > 0) {
+                            $("input[name='role'][value='" + roles[0].id + "']").prop('checked', true)
+                        }
+                    }
+                })
+            }
+        }
+
+        function closeModal() {
+            $("#kt_modal_add_user").modal('hide');
+        }
+
+        function handleStoreUser() {
+            event.preventDefault();
+            fvUser.validate().then(function(status) {
+                if (status == "Valid") {
+                    let formData = new FormData(formUser);
+                    setProcessingButton("btn-store-user", true)
+                    clearErrorInput()
+                    doPost('/users', formData, function(message, res) {
+                        setProcessingButton("btn-store-user", false)
+
+                        if (!res) return
+                        if (res.rc == 300) return showAlert('warning', res.rm, NO_ACTION)
+
+                        if (res.rc == 400) {
+                            var errors = res.data;
+                            return mappingErrorInput(errors);
+                        }
+
+                        closeModal()
+                        showAlert('success', res.rm, RELOAD_DATATABLE)
+                    });
+                }
+            });
         }
     </script>
 @endsection

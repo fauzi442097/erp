@@ -81,8 +81,8 @@ class ProfileController extends Controller
             DB::commit();
             return $this->success('Profile berhasil diupdate');
         } catch (\Exception $e) {
-            Log::error($e);
             DB::rollBack();
+            Log::error($e);
             return $this->error('Terjadi kesalahan');
         }
     }

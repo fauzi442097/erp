@@ -2,13 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Role;
 use App\Models\User;
+
+use Illuminate\Http\Request;
 use App\Traits\Response;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
 
 use DB;
 use DataTables;
+use Log;
+
+
 
 class UserController extends Controller
 {
@@ -16,7 +24,8 @@ class UserController extends Controller
 
     public function index(Request $request): View
     {
-        return view('users.index', []);
+        $param['roles'] = Role::all();
+        return view('users.index', $param);
     }
 
     public function getData(Request $request)
@@ -59,5 +68,71 @@ class UserController extends Controller
 
         $label = $isSuspended ? 'diaktifkan' : 'dinonaktifkan';
         return $this->success('User berhasil ' .  $label);
+    }
+
+    public function store(Request $request)
+    {
+        $validate = Validator::make($request->all(), [
+            'avatar' => ['nullable', 'file', 'mimes:png,jpg,jpeg', 'max:10240'],
+            'name' => ['required', 'min:3', 'max:255', 'regex:/^[\pL\s\'\-\.\,]+$/u'],
+            'role' => ['required'],
+            'email' => [
+                'required',
+                'string',
+                'lowercase',
+                'email',
+                'max:255',
+                $request->action_type == 'update' ? Rule::unique('users')->ignore($request->user_id) : Rule::unique(User::class)
+            ],
+        ], [
+            'name.regex' => "Nama hanya boleh mengandung huruf, spasi, apostrof ('), dan tanda hubung (-), serta gelar yang sah (misal: Dr., M.Sc.).",
+            'email.unique' => 'Email sudah digunakan'
+        ]);
+
+        if ($validate->fails()) {
+            return $this->badRequest('Bad Request', $validate->errors());
+        }
+
+        DB::beginTransaction();
+        try {
+
+            if ($request->action_type == 'create') {
+                $user = new User;
+            } else {
+                $user = User::find($request->user_id);
+            }
+
+            $user->name = $request->name;
+            $user->email = $request->email;
+
+            if ($request->hasFile('avatar')) {
+                if ($user->photo_url) {
+                    Storage::disk('public')->delete($user->photo_url);
+                }
+
+                $path = $request->file('avatar')->store('profile', 'public');
+                $user->photo_url =  $path;
+            }
+
+            $user->password = bcrypt('Admin@123123');
+            $user->save();
+
+            $role = Role::find($request->role);
+            $user->syncRoles([$role->name]);
+
+            DB::commit();
+            return $this->success('Profile berhasil diupdate');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error($e);
+            return $this->error('Terjadi kesalahan');
+        }
+    }
+
+    public function show(Request $request, User $user)
+    {
+        $user->load('roles');
+        $user->full_photo_url = $user->photo_url ? asset($user->photo_url) : null;
+        return $this->success('Sukses', $user);
     }
 }

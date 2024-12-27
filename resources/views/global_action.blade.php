@@ -122,12 +122,8 @@
                 callback("", response);
             }
         }).fail(function(response) {
-            if (response.status === 401) {
-                window.location.replace("/login");
-            } else {
-                if (typeof callback == 'function') {
-                    callback(response.responseJSON?.message, null);
-                }
+            if (typeof callback == 'function') {
+                callback(response.responseJSON?.message, null);
             }
         });
     }
@@ -240,6 +236,7 @@
 
     function clearErrorInput() {
         $('.error-input-message').addClass('d-none');
+        $('.error-input-message').children('div').html("");
     }
 
     function showLoading() {
@@ -248,5 +245,17 @@
 
     function hideLoading() {
         KTApp.hidePageLoading();
+    }
+
+    function toggleShowPassword(elm) {
+        event.preventDefault();
+        let inputType = $(elm).siblings('input').attr('type')
+        if (inputType == 'password') {
+            $(elm).siblings('input').attr('type', 'input')
+            $(elm).children('i').removeClass('bi-eye').addClass('bi-eye-slash');
+        } else {
+            $(elm).siblings('input').attr('type', 'password')
+            $(elm).children('i').removeClass('bi-eye-slash').addClass('bi-eye');
+        }
     }
 </script>

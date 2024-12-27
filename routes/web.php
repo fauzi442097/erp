@@ -25,8 +25,10 @@ Route::middleware('auth')->group(function () {
     Route::prefix('users')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('users.index');
         Route::get('/get_data', [UserController::class, 'getData'])->name('users.get_data');
+        Route::get('/{user}', [UserController::class, 'show'])->name('user.show', ['user' => 'user']);
         Route::delete('/{user}', [UserController::class, 'destroy'])->name('users.delete', ['user' => 'user']);
         Route::patch('/{user}/toogle_aktif', [UserController::class, 'activeDeactiveUser'])->name('users.delete', ['user' => 'user']);
+        Route::post('/', [UserController::class, 'store'])->name('users.store');
     });
 });
 

@@ -174,17 +174,5 @@
                 }
             });
         }
-
-        function toggleShowPassword(elm) {
-            event.preventDefault();
-            let inputType = $(elm).siblings('input').attr('type')
-            if (inputType == 'password') {
-                $(elm).siblings('input').attr('type', 'input')
-                $(elm).children('i').removeClass('bi-eye').addClass('bi-eye-slash');
-            } else {
-                $(elm).siblings('input').attr('type', 'password')
-                $(elm).children('i').removeClass('bi-eye-slash').addClass('bi-eye');
-            }
-        }
     </script>
 @endsection
