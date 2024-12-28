@@ -42,7 +42,7 @@ class ProfileController extends Controller
     public function update(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'avatar' => ['nullable', 'file', 'mimes:png,jpg,jpeg', 'max:10240'],
+            'avatar' => ['nullable', 'file', 'mimes:png,jpg,jpeg', 'max:512'],
             'name' => ['required', 'min:3', 'max:255', 'regex:/^[\pL\s\'\-\.\,]+$/u'],
             'email' => [
                 'required',

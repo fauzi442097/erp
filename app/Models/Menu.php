@@ -22,4 +22,9 @@ class Menu extends Model
     {
         return $this->hasMany(Menu::class, 'parent_id')->orderBy('seq', 'ASC');
     }
+
+    public function subMenu()
+    {
+        return $this->children()->with('subMenu');
+    }
 }

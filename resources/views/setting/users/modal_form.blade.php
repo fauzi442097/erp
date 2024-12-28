@@ -66,7 +66,7 @@
                                  <div id="avatar_error"></div>
                              </div>
 
-                             <div class="form-text">Jenis file yang diizinkan: png, jpg, jpeg Maksimal 10MB</div>
+                             <div class="form-text">Jenis file yang diizinkan: png, jpg, jpeg Maksimal 500KB</div>
                          </div>
 
                          <div class="fv-row mb-7">
@@ -86,19 +86,6 @@
 
                              <div class="error-input-message">
                                  <div id="email_error"></div>
-                             </div>
-                         </div>
-
-                         <div class="fv-row mb-7">
-                             <label class="mb-2 fw-semibold fs-6">Password</label>
-
-                             <div class="input-group">
-                                 <input type="password" class="form-control form-control-lg form-control-solid"
-                                     name="password" id="password" disabled value="Admin@123123" />
-                                 <button class="input-group-text" onclick="toggleShowPassword(this)"
-                                     style="border: none">
-                                     <i class="bi bi-eye" style="font-size: 18px;"></i>
-                                 </button>
                              </div>
                          </div>
 

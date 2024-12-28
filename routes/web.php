@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\UserController;
+
 use Illuminate\Support\Facades\Route;
 
 
@@ -23,12 +23,22 @@ Route::middleware('auth')->group(function () {
     Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
 
     Route::prefix('users')->group(function () {
-        Route::get('/', [UserController::class, 'index'])->name('users.index');
-        Route::get('/get_data', [UserController::class, 'getData'])->name('users.get_data');
-        Route::get('/{user}', [UserController::class, 'show'])->name('user.show', ['user' => 'user']);
-        Route::delete('/{user}', [UserController::class, 'destroy'])->name('users.delete', ['user' => 'user']);
-        Route::patch('/{user}/toogle_aktif', [UserController::class, 'activeDeactiveUser'])->name('users.delete', ['user' => 'user']);
-        Route::post('/', [UserController::class, 'store'])->name('users.store');
+        Route::controller(App\Http\Controllers\UserController::class)->group(function () {
+            Route::get('/', 'index')->name('users.index');
+            Route::get('/get_data', 'getData')->name('users.get_data');
+            Route::get('/{user}', 'show')->name('user.show', ['user' => 'user']);
+            Route::delete('/{user}', 'destroy')->name('users.delete', ['user' => 'user']);
+            Route::patch('/{user}/toogle_aktif', 'activeDeactiveUser')->name('users.delete', ['user' => 'user']);
+            Route::post('/', 'store')->name('users.store');
+        });
+    });
+
+    Route::prefix('roles')->group(function () {
+        Route::controller(App\Http\Controllers\RoleController::class)->group(function () {
+            Route::get('/', 'index')->name('roles.index');
+            Route::get('/form/{action}/{id?}', 'form')->name('roles.form', ['action' => 'action']);
+            Route::post('/', 'store')->name('roles.store');
+        });
     });
 });
 

@@ -4,54 +4,35 @@ namespace App\Http\Controllers;
 
 use App\Models\Role;
 use App\Models\User;
-
+use App\Services\UserService;
 use Illuminate\Http\Request;
-use App\Traits\Response;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
-
+use App\Traits\Response;
 
 use DB;
 use DataTables;
-use Log;
-
-
 
 class UserController extends Controller
 {
     use Response;
+    protected $userService;
+
+    public function __construct(UserService $userService)
+    {
+        $this->userService = $userService;
+    }
 
     public function index(Request $request): View
     {
         $param['roles'] = Role::all();
-        return view('users.index', $param);
+        return view('setting.users.index', $param);
     }
 
     public function getData(Request $request)
     {
-        $users = User::with('roles')->select('users.*')->orderBy('id', 'DESC');
-
-        return DataTables::of($users)
-            ->addColumn('status', function ($user) {
-                if (!$user->suspended) {
-                    return '<span class="badge badge-light-success">Aktif</span>';
-                }
-                return '<span class="badge badge-light-danger">Non Aktif</span>';
-            })
-            ->editColumn('photo_url', function ($user) {
-                $urlImg = $user->photo_url ? asset($user->photo_url) : 'assets/media/svg/avatars/blank.svg';
-                return '<div class="overflow-hidden symbol symbol-circle symbol-40px me-3">
-                            <div class="symbol-label">
-                                <img src="' . $urlImg . '" alt="Photo ' . $user->name . '" class="w-100" style="object-fit: cover"  />
-                            </div>
-                        </div>';
-            })
-            ->addColumn('role', function ($user) {
-                return $user->roles()->exists() ? $user->roles[0]->name : '';
-            })
-            ->rawColumns(['photo_url', 'status'])
-            ->make(true);
+        return $this->userService->getDatatable();
     }
 
     public function destroy(Request $request, User $user)
@@ -62,7 +43,7 @@ class UserController extends Controller
 
     public function activeDeactiveUser(Request $request, User $user)
     {
-        $isSuspended = $request->active === "true";
+        $isSuspended = $request->active == "1";
         $user->suspended = $isSuspended ? false : true;
         $user->save();
 
@@ -73,7 +54,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'avatar' => ['nullable', 'file', 'mimes:png,jpg,jpeg', 'max:10240'],
+            'avatar' => ['nullable', 'file', 'mimes:png,jpg,jpeg', 'max:512'],
             'name' => ['required', 'min:3', 'max:255', 'regex:/^[\pL\s\'\-\.\,]+$/u'],
             'role' => ['required'],
             'email' => [
@@ -93,40 +74,7 @@ class UserController extends Controller
             return $this->badRequest('Bad Request', $validate->errors());
         }
 
-        DB::beginTransaction();
-        try {
-
-            if ($request->action_type == 'create') {
-                $user = new User;
-            } else {
-                $user = User::find($request->user_id);
-            }
-
-            $user->name = $request->name;
-            $user->email = $request->email;
-
-            if ($request->hasFile('avatar')) {
-                if ($user->photo_url) {
-                    Storage::disk('public')->delete($user->photo_url);
-                }
-
-                $path = $request->file('avatar')->store('profile', 'public');
-                $user->photo_url =  $path;
-            }
-
-            $user->password = bcrypt('Admin@123123');
-            $user->save();
-
-            $role = Role::find($request->role);
-            $user->syncRoles([$role->name]);
-
-            DB::commit();
-            return $this->success('Profile berhasil diupdate');
-        } catch (\Exception $e) {
-            DB::rollBack();
-            Log::error($e);
-            return $this->error('Terjadi kesalahan');
-        }
+        return $this->userService->store($request);
     }
 
     public function show(Request $request, User $user)

@@ -72,7 +72,7 @@
                             <div id="avatar_error"></div>
                         </div>
 
-                        <div class="form-text">Allowed file types: png, jpg, jpeg.</div>
+                        <div class="form-text">Jenis file yang diizinkan: png, jpg, jpeg Maksimal 500KB</div>
                         <!--end::Hint-->
                     </div>
                     <!--end::Col-->
