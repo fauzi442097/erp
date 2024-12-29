@@ -47,8 +47,8 @@
                                 message: "Wajib diisi",
                             },
                             stringLength: {
-                                min: 5,
-                                message: 'Minimal diisi 5 karakter'
+                                min: 8,
+                                message: 'Minimal diisi 8 karakter'
                             }
                         },
                     },
@@ -59,8 +59,8 @@
                                 message: "Wajib diisi",
                             },
                             stringLength: {
-                                min: 5,
-                                message: 'Minimal diisi 5 karakter'
+                                min: 8,
+                                message: 'Minimal diisi 8 karakter'
                             }
                         },
                     },
@@ -80,7 +80,7 @@
                             },
                             stringLength: {
                                 min: 5,
-                                message: 'Minimal diisi 5 karakter'
+                                message: 'Minimal diisi 8 karakter'
                             }
                         },
                     },

@@ -45,8 +45,9 @@
                                  </div>
                              </div>
                              <div class="col-lg-4">
-                                 <div class="mb-0 fv-row">
+                                 <div class="mb-0 fv-row" data-kt-password-meter="true">
                                      <label for="newpassword" class="mb-3 form-label fs-6 fw-bold">Password Baru</label>
+
 
                                      <div class="input-group">
                                          <input type="password" class="form-control form-control-lg form-control-solid"
@@ -84,7 +85,11 @@
                              </div>
 
                          </div>
-                         <div class="mb-5 form-text">Password harus diisi minimal 5 karakter</div>
+
+                         <div class="mb-5 form-text">
+                             Minimal 8 karakter atau lebih dengan campuran huruf kapital, huruf kecil, dan angka.
+                         </div>
+
                          <div class="d-flex" style="gap: 8px">
                              <x-submit-button type="submit" id="kt_password_submit" onclick="handleChangePassword()">
                                  Ubah Password

@@ -28,3 +28,15 @@
 <script src="{{ asset('assets/js/custom/apps/chat/chat.js') }}"></script>
 <script src="{{ asset('assets/js/custom/utilities/modals/upgrade-plan.js') }}"></script>
 <script src="{{ asset('assets/js/custom/utilities/modals/users-search.js') }}"></script>
+
+<script src="{{ asset('js/pusher.min.js') }}"></script>
+<script>
+    var pusher = new Pusher('eb20b58eb47a725a635c', {
+        cluster: 'ap1'
+    });
+
+    var channel = pusher.subscribe('my-channel');
+    channel.bind('message-sent', function(data) {
+        alert(JSON.stringify(data));
+    });
+</script>

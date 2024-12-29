@@ -69,8 +69,9 @@
                                 @endphp
                                 <tr id="{{ $menu->parent_id }}_{{ $menu->id }}">
                                     <td class="text-gray-800">
-                                        <span class="{{ $mlClass }}">
-                                            {{ $menu->name }}</span>
+
+                                        <span class="{{ $mlClass }} d-flex align-items-center">
+                                            <span class="bullet bg-primary me-3"></span> {{ $menu->name }}</span>
                                     </td>
                                     <td>
                                         <div class="d-flex">

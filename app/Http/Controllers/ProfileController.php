@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password as PasswordRule;
+
 
 use Hash, DB, Storage;
 use Log;
@@ -111,8 +113,16 @@ class ProfileController extends Controller
     public function updatePassword(Request $request)
     {
         $validate = Validator::make($request->all(), [
-            'currentpassword' => ['required', 'min:5'],
-            'newpassword' => ['required', 'min:5', 'regex:/^[^\s]*$/']
+            'currentpassword' => ['required', 'min:8'],
+            'newpassword' => [
+                'required',
+                'min:8',
+                PasswordRule::min(8) // Set minimum password length to 6
+                    ->letters() // Ensure it contains letters
+                    ->numbers() // Ensure it contains numbers
+                    // ->symbols() // Ensure it contains symbols
+                    ->mixedCase() // Ensure it contains both uppercase and lowercase letters,
+            ]
         ], [
             'newpassword.regex' => 'Password tidak boleh mengandung spasi.',
         ]);

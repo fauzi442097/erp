@@ -44,9 +44,10 @@
                             <!--begin::Permissions-->
                             @if ($menu->subMenu->isNotEmpty())
                                 <div class="text-gray-600 d-flex flex-column" class="accordion accordion-icon-toggle"
-                                    id="kt_accordion_{{ $menu->id }}">
+                                    id="kt_accordion_{{ $role->id }}_{{ $menu->id }}">
                                     <div class="py-2 cursor-pointer d-flex align-items-center" data-bs-toggle="collapse"
-                                        data-bs-target="#kt_accordion_{{ $menu->id }}_item" onclick="rotateIcon(this)">
+                                        data-bs-target="#kt_accordion_{{ $role->id }}_{{ $menu->id }}_item"
+                                        onclick="rotateIcon(this)">
                                         <span class="bullet bg-primary me-3"></span>
                                         {{ $menu->name }}
 
@@ -57,8 +58,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="collapse" data-bs-parent="#kt_accordion_{{ $menu->id }}"
-                                        id="kt_accordion_{{ $menu->id }}_item">
+                                    <div class="collapse"
+                                        data-bs-parent="#kt_accordion_{{ $role->id }}_{{ $menu->id }}"
+                                        id="kt_accordion_{{ $role->id }}_{{ $menu->id }}_item">
                                         @foreach ($menu->subMenu as $subMenu)
                                             <div class="py-2 mx-6 d-flex align-items-center">
                                                 <span class="bullet bg-primary me-3"></span> {{ $subMenu->name }}

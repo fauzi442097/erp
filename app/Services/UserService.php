@@ -2,11 +2,16 @@
 
 namespace App\Services;
 
-use App\Repositories\UserRepository;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
+
+
+use App\Repositories\UserRepository;
+use App\Mail\WelcomeNewUser;
 use App\Traits\Response;
 
 use App\Models\Role;
+use App\Helper\Helper;
 
 use DB;
 use Log;
@@ -61,8 +66,7 @@ class UserService
 
             $dataUser = [
                 'name' => $request->name,
-                'email' => $request->email,
-                'password' => bcrypt('Admin@123123')
+                'email' => $request->email
             ];
 
             if ($request->hasFile('avatar')) {
@@ -79,7 +83,13 @@ class UserService
             }
 
             if ($request->action_type == 'create') {
+                $newPassword = Helper::generatePassword();
+                $dataUser['password'] = bcrypt($newPassword);
                 $user = $this->userRepository->store($dataUser);
+
+                // Send email new user
+                $user->password_plain = Helper::generatePassword();
+                Mail::to($user->email)->send(new WelcomeNewUser($user));
             } else {
                 $user = $this->userRepository->update($request->user_id, $dataUser);
             }
@@ -89,7 +99,7 @@ class UserService
             $user->syncRoles([$role->name]);
 
             DB::commit();
-            return $this->success('Profile berhasil diupdate');
+            return $this->success('Data berhasil disimpan');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error($e);

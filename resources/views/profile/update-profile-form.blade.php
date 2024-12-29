@@ -49,8 +49,6 @@
                                 <!--end::Inputs-->
                             </label>
 
-
-
                             <!--end::Label-->
                             <!--begin::Cancel-->
                             <span class="shadow btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body"
