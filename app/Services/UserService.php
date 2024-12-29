@@ -29,11 +29,17 @@ class UserService
         $this->userRepository = $userRepository;
     }
 
-    public function getDatatable()
+    public function getDatatable($request)
     {
+        $userType = $request->type;
+
+
         $users = $this->userRepository
             ->getInitWithRelationship(['roles'])
             ->select('users.*')
+            ->when($userType == 'deleted', function ($query) {
+                return $query->onlyTrashed();
+            })
             ->orderBy('id', 'DESC');
 
         return DataTables::of($users)
@@ -46,14 +52,20 @@ class UserService
             ->addColumn('role', function ($user) {
                 return $user->roles()->exists() ? $user->roles[0]->name : '';
             })
-            ->addColumn('actions', function ($user) {
+            ->editColumn('deleted_at', function ($user) {
+                if ($user->deleted_at) {
+                    return date('d-m-Y H:i', strtotime($user->deleted_at));
+                }
+                return '';
+            })
+            ->addColumn('actions', function ($user) use ($userType) {
                 $setActive = false;
                 $labelAktif = 'Non Aktif';
                 if ($user->suspended) {
                     $setActive = true;
                     $labelAktif = 'Aktif';
                 }
-                return view('setting.users.datatables.actions', compact('user', 'setActive', 'labelAktif'))->render();
+                return view('setting.users.datatables.actions', compact('user', 'setActive', 'labelAktif', 'userType'))->render();
             })
             ->rawColumns(['photo_url', 'status', 'actions'])
             ->make(true);

@@ -3,14 +3,31 @@
 @section('toolbar')
     <x-toolbar :pageTitle="'User'">
         <x-breadcrumb :items="[['name' => 'Master Data', 'url' => null], ['name' => 'Users', 'url' => route('users.index')]]" />
+
+        <x-slot name="toolbarActions">
+            <div class="gap-2 d-flex align-items-center gap-lg-3">
+                <button type="button" class="btn btn-primary" onclick="showModalForm('create')">
+                    <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
+                    <span class="svg-icon svg-icon-2">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1"
+                                transform="rotate(-90 11.364 20.364)" fill="currentColor" />
+                            <rect x="4.36396" y="11.364" width="16" height="2" rx="1" fill="currentColor" />
+                        </svg>
+                    </span>
+                    <!--end::Svg Icon-->Tambah User</button>
+            </div>
+        </x-slot>
+
     </x-toolbar>
 @endsection
 
 @section('content')
     <!--begin::Card-->
-    <div class="card">
+    <div class="card my-card">
         <!--begin::Card header-->
-        <div class="pt-6 border-0 card-header">
+        <div class="border-0 card-header">
             <!--begin::Card title-->
             <div class="card-title">
 
@@ -18,7 +35,8 @@
                 <div class="my-1 d-flex align-items-center position-relative">
                     <!--begin::Svg Icon | path: icons/duotune/general/gen021.svg-->
                     <span class="svg-icon svg-icon-1 position-absolute ms-6">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            xmlns="http://www.w3.org/2000/svg">
                             <rect opacity="0.5" x="17.0365" y="15.1223" width="8.15546" height="2" rx="1"
                                 transform="rotate(45 17.0365 15.1223)" fill="currentColor" />
                             <path
@@ -27,7 +45,8 @@
                         </svg>
                     </span>
                     <!--end::Svg Icon-->
-                    <input type="text" data-kt-user-table-filter="search" class="form-control w-250px ps-14"
+                    <input type="text" data-kt-user-table-filter="search"
+                        class="form-control w-250px ps-14 form-control-solid search-datatable"
                         onkeyup="handleSearchDatatable(this)" placeholder="Search user" />
                 </div>
                 <!--end::Search-->
@@ -40,18 +59,18 @@
                 <!--begin::Toolbar-->
                 <div class="d-flex justify-content-end" data-kt-user-table-toolbar="base">
                     <!--begin::Add user-->
-                    <button type="button" class="btn btn-primary" onclick="showModalForm('create')">
-                        <!--begin::Svg Icon | path: icons/duotune/arrows/arr075.svg-->
-                        <span class="svg-icon svg-icon-2">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <rect opacity="0.5" x="11.364" y="20.364" width="16" height="2" rx="1"
-                                    transform="rotate(-90 11.364 20.364)" fill="currentColor" />
-                                <rect x="4.36396" y="11.364" width="16" height="2" rx="1"
-                                    fill="currentColor" />
-                            </svg>
-                        </span>
-                        <!--end::Svg Icon-->Tambah User</button>
+
+                    <ul class="mb-5 nav nav-tabs nav-line-tabs nav-line-tabs-2x fs-6 my-tabs-datatable">
+                        <li class="nav-item">
+                            <a class="nav-link active" data-bs-toggle="tab" href="#kt_tab_active_user"
+                                onclick="initDatatable('kt_table_users', 'active')"> Active User </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" data-bs-toggle="tab" href="#kt_tab_deleted_user"
+                                onclick="initDatatable('kt_table_deleted_users', 'deleted')"> Deleted User </a>
+                        </li>
+                    </ul>
+
                     <!--end::Add user-->
                 </div>
                 <!--end::Toolbar-->
@@ -62,24 +81,17 @@
         <!--end::Card header-->
 
         <!--begin::Card body-->
-        <div class="py-4 card-body">
-            <div class="table-responsive">
-                <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
-                    <thead>
-                        <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                            <th></th>
-                            <th></th>
-                            <th class="min-w-125px">Nama Lengkap</th>
-                            <th class="min-w-125px">Email</th>
-                            <th class="min-w-125px">Role</th>
-                            <th>Status</th>
-                            <th class="text-end min-w-100px">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-gray-600 fw-semibold">
-                    </tbody>
-                </table>
+
+        <div class="pt-0 card-body tab-content" id="myTabContent">
+
+            <div class="tab-pane fade show active" id="kt_tab_active_user" role="tabpanel">
+                @include('setting.users.datatables.table', ['tableId' => 'kt_table_users'])
             </div>
+
+            <div class="tab-pane fade" id="kt_tab_deleted_user" role="tabpanel">
+                @include('setting.users.datatables.table', ['tableId' => 'kt_table_deleted_users'])
+            </div>
+
         </div>
         <!--end::Card body-->
     </div>
@@ -94,21 +106,22 @@
         var formUser = document.getElementById("kt_modal_add_user_form");
 
         $(document).ready(function() {
-            initDatatable();
+            initDatatable('kt_table_users', 'active');
             initFormUser();
         })
 
-        function initDatatable() {
-            datatable = $("#kt_table_users").DataTable({
+        function initDatatable(table_id, filter_user) {
+            datatable = $("#" + table_id).DataTable({
                 searchDelay: 500,
                 processing: true,
                 serverSide: true,
                 pageLength: 10,
-                scrollY: "400px",
+                scrollY: "500px",
                 scrollX: true,
                 scrollCollapse: true,
+                destroy: true,
                 ajax: {
-                    url: '{{ route('users.get_data') }}',
+                    url: '{{ route('users.get_data') }}?type=' + filter_user,
                 },
                 columns: [{
                         name: 'id',
@@ -134,9 +147,16 @@
                         searchable: false,
                     },
                     {
+                        data: 'deleted_at',
+                        orderable: true,
+                        searchable: false,
+                        visible: filter_user == 'deleted'
+                    },
+                    {
                         data: 'status',
                         orderable: true,
                         searchable: false,
+                        visible: filter_user == 'active'
                     },
                     {
                         targets: -1,
@@ -258,8 +278,25 @@
             })
         }
 
-        function handleSearchDatatable(e) {
-            datatable.search($(e).val()).draw();
+        function handleRestoreUser(userId, name) {
+            showAlertConfirm('question', `Apakah Anda yakin akan mengembalikan user ${name}?`, 'Restore', function(answer) {
+                if (answer.value) {
+                    let formData = new FormData()
+                    formData.append('_method', 'PATCH')
+                    showLoading()
+                    doPost(`users/${userId}/restore`, formData, function(msg, res) {
+                        hideLoading()
+                        if (!res) return
+                        if (res.rc == 300) {
+                            return showAlert('warning', res.rm, NO_ACTION);
+                        }
+
+                        if (res.rc == 200) {
+                            showAlert('success', res.rm, RELOAD_DATATABLE);
+                        }
+                    })
+                }
+            })
         }
 
         function showModalForm(action, user_id) {

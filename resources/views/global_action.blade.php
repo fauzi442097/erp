@@ -258,4 +258,8 @@
             $(elm).children('i').removeClass('bi-eye-slash').addClass('bi-eye');
         }
     }
+
+    function handleSearchDatatable(e) {
+        datatable.search($(e).val()).draw();
+    }
 </script>

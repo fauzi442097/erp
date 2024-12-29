@@ -32,7 +32,7 @@ class UserController extends Controller
 
     public function getData(Request $request)
     {
-        return $this->userService->getDatatable();
+        return $this->userService->getDatatable($request);
     }
 
     public function destroy(Request $request, User $user)
@@ -40,6 +40,7 @@ class UserController extends Controller
         $user->delete();
         return $this->success('User berhasil dihapus');
     }
+
 
     public function activeDeactiveUser(Request $request, User $user)
     {
@@ -82,5 +83,13 @@ class UserController extends Controller
         $user->load('roles');
         $user->full_photo_url = $user->photo_url ? asset($user->photo_url) : null;
         return $this->success('Sukses', $user);
+    }
+
+    public function restoreUser(Request $request, $userId)
+    {
+        $user = User::withTrashed()->find($userId);
+        if (!$user) return $this->warning('User tidak ditemukan');
+        $user->restore();
+        return $this->success('User berhasil direstore');
     }
 }

@@ -5,16 +5,18 @@
         data-kt-menu-placement="bottom-end">
         <i class="fonticon-alarm fs-2"></i>
         <span
-            class="top-0 mt-3 position-absolute start-100 translate-middle badge badge-circle badge-danger w-15px h-15px ms-n4">5</span>
+            class="top-0 mt-3 position-absolute start-100 translate-middle badge badge-circle badge-danger w-15px h-15px ms-n4"
+            id="new-total-notification">5</span>
     </div>
+
     <!--begin::Menu-->
     <div class="menu menu-sub menu-sub-dropdown menu-column w-350px w-lg-375px" data-kt-menu="true">
         <!--begin::Heading-->
         <div class="d-flex flex-column bgi-no-repeat rounded-top"
             style="background-image:url('{{ asset('assets/media/misc/menu-header-bg.jpg') }}')">
             <!--begin::Title-->
-            <h3 class="mt-10 mb-6 text-white fw-semibold px-9">Notifikasi
-                <span class="opacity-75 fs-8 ps-3">24 reports</span>
+            <h3 class="mt-10 mb-6 text-white fw-semibold px-9">
+                Notifikasi
             </h3>
             <!--end::Title-->
             <!--begin::Tabs-->

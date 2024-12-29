@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
             Route::get('/get_data', 'getData')->name('users.get_data');
             Route::get('/{user}', 'show')->name('user.show', ['user' => 'user']);
             Route::delete('/{user}', 'destroy')->name('users.delete', ['user' => 'user']);
+            Route::patch('/{userId}/restore', 'restoreUser')->name('users.restore', ['userId' => 'userId']);
             Route::patch('/{user}/toogle_aktif', 'activeDeactiveUser')->name('users.delete', ['user' => 'user']);
             Route::post('/', 'store')->name('users.store');
         });
