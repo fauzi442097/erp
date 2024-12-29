@@ -41,7 +41,7 @@
 }
 
 .my-tabs-datatable {
-    background: #e7e7e7;
+    background: #F9F9F9;
     padding: 5px 10px;
     border-radius: 0.75rem;
     margin-right: 11px;
@@ -57,6 +57,9 @@ ul.my-tabs-datatable li.nav-item a.nav-link {
 ul.my-tabs-datatable li.nav-item a.nav-link.active {
     border-bottom: 0 !important;
     background: #ffffff !important;
+    font-weight: 500 !important;
+    color: #5198ff !important;
+    border: 1px solid #5198ff !important
 }
 
 ul.my-tabs-datatable li.nav-item:hover a.nav-link {
